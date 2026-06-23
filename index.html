@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-          --bg: #E5E7EB; 
+          --bg: #F3F4F6; 
           --card-bg: #FFFFFF; 
           --card-border: transparent; 
           --main-text: #2B1E19; 
@@ -27,8 +27,8 @@
           --desc-text: #B58450; 
           --accent: #A9231A; 
           --accent-glow: rgba(169, 35, 26, 0.15);
-          --glass: #E5E7EB; 
-          --header-bg: #E5E7EB;
+          --glass: #F3F4F6; 
+          --header-bg: #F3F4F6;
           --success: #1E7E34;
           --success-bg: #EBF7EE;
           --success-border: #1E7E34;
@@ -137,23 +137,56 @@
 
         .menu-list { padding: 12px 8px; max-width: 600px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         
-        .food-card { background: var(--card-bg); border-radius: 20px; display: flex; flex-direction: column; padding: 15px 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03); border: none; position: relative; overflow: hidden; justify-content: space-between; margin-bottom: 4px; min-height: 140px; }
-        body.dark-mode .food-card { background: #140E0C; }
-        .food-info { flex: 1; display: flex; flex-direction: column; width: 100%; }
+        /* كارت الطعام المرن - يدعم الخلفيات المخصصة أو الافتراضية عبر الجافاسكريبت */
+        .food-card { 
+          background-color: var(--card-bg);
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          border-radius: 24px; 
+          display: flex; 
+          flex-direction: column; 
+          padding: 12px 12px 14px 12px; 
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04); 
+          border: none; 
+          position: relative; 
+          overflow: hidden; 
+          justify-content: space-between; 
+          margin-bottom: 4px; 
+          min-height: 140px; 
+        }
+        body.dark-mode .food-card { background-color: #140E0C; }
         
-        .title-wrapper { display: flex; justify-content: center; align-items: center; width: 100%; margin-bottom: 8px; position: relative; }
+        /* طبقة تظليل ذكية لحماية النصوص في حال وجود صورة خلفية للكارت */
+        .food-card.has-bg::after {
+          content: '';
+          position: absolute;
+          top: 0; left: 0; right: 0; bottom: 0;
+          background: linear-gradient(to bottom, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.7) 100%);
+          z-index: 0;
+        }
+        body.dark-mode .food-card.has-bg::after {
+          background: linear-gradient(to bottom, rgba(20,14,12,0.85) 0%, rgba(20,14,12,0.85) 100%);
+        }
+
+        .food-info { flex: 1; display: flex; flex-direction: column; width: 100%; z-index: 1; }
         
+        /* تظبيط الموضع لاسم الصنف ورفعه فوق حاجة بسيطة خالص */
+        .title-wrapper { display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 2px; margin-bottom: 4px; position: relative; }
+        
+        /* تكبير اسم الصنف حاجة بسيطة وزيادة وضوحه */
         .food-name { 
           font-weight: 800; 
-          font-size: 0.75rem; 
+          font-size: 0.82rem; 
           color: var(--card-text);
-          line-height: 1.2;
+          line-height: 1.25;
           text-align: center;
           display: block;
           word-break: break-word;
           overflow: hidden;
           padding: 0 2px;
         }
+        body.dark-mode .food-name { color: #FFFFFF; }
 
         .inline-sizes-stack { display: flex; flex-direction: column; gap: 6px; width: 100%; margin-top: auto; }
         
@@ -164,7 +197,7 @@
         
         .inline-add-btn-circle { background: var(--accent); color: white; padding: 3px 6px; border-radius: 6px; font-size: 0.6rem; font-weight: bold; flex-shrink: 0; cursor: pointer; }
 
-        .price-row { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: auto; padding: 4px; }
+        .price-row { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: auto; padding: 2px 4px 0 4px; }
         .food-price { font-weight: 800; color: var(--accent); font-size: 0.85rem; }
 
         .add-btn { background: var(--accent); color: white; border: none; padding: 6px 14px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: pointer; transition: background 0.2s ease; white-space: nowrap; }
@@ -284,6 +317,9 @@
         let currentTotal = 0;
         let headers = [];
 
+        // قائمة الأقسام الخمسة المستهدفة بالخلفية المخصصة
+        const customBgCategories = ["فطير لحوم", "فطير دجاج", "فطير مكسات", "فطير بحريات", "فطير خضروات"];
+
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             const icon = document.getElementById('themeBtn').querySelector('i');
@@ -384,6 +420,12 @@
                 el.classList.add('active');
                 el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             }
+            
+            // فحص إذا كان القسم الحالي يحتاج خلفية صورة مخصصة
+            const isCustomBg = customBgCategories.includes(cat);
+            const cardInlineStyle = isCustomBg ? `style="background-image: url('${IMAGES_PATH}${cat}.jpg');"` : '';
+            const cardExtraClass = isCustomBg ? 'has-bg' : '';
+
             document.getElementById('menuList').innerHTML = menuData.filter(i => i.category === cat).map((item) => {
                 let displayPriceHtml = '';
 
@@ -402,7 +444,7 @@
                 }
 
                 return `
-                <div class="food-card">
+                <div class="food-card ${cardExtraClass}" ${cardInlineStyle}>
                     <div class="food-info">
                         <div class="title-wrapper">
                             <span class="food-name">${item.name}</span>
@@ -457,7 +499,7 @@
 
         function executeAddToCartInline(element, name, price) {
             const originalText = element.innerText;
-            element.innerText = "تم✔️";
+            element.innerText = "تم ✔️";
             element.style.background = "#1E7E34";
             
             cart.push({name, price});
