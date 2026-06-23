@@ -137,16 +137,13 @@
 
         .menu-list { padding: 12px 8px; max-width: 600px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         
-        /* كارت الطعام المرن */
         .food-card { 
           background-color: var(--card-bg);
-          background-size: cover;
-          background-position: center;
-          background-repeat: no-repeat;
           border-radius: 24px; 
           display: flex; 
-          flex-direction: column; 
-          padding: 12px 12px 14px 12px; 
+          flex-direction: row-reverse; 
+          align-items: center;
+          padding: 12px; 
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04); 
           border: none; 
           position: relative; 
@@ -154,51 +151,54 @@
           justify-content: space-between; 
           margin-bottom: 4px; 
           min-height: 140px; 
+          gap: 10px;
         }
         body.dark-mode .food-card { background-color: #140E0C; }
-        
-        /* طبقة تظليل ذكية لحماية النصوص */
-        .food-card.has-bg::after {
-          content: '';
-          position: absolute;
-          top: 0; left: 0; right: 0; bottom: 0;
-          background: linear-gradient(to bottom, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.85) 100%);
-          z-index: 0;
-        }
-        body.dark-mode .food-card.has-bg::after {
-          background: linear-gradient(to bottom, rgba(20,14,12,0.9) 0%, rgba(20,14,12,0.9) 100%);
-        }
 
-        .food-info { flex: 1; display: flex; flex-direction: column; width: 100%; z-index: 1; }
+        .food-card-thumb {
+          width: 75px;
+          height: 75px;
+          border-radius: 16px;
+          object-fit: cover;
+          flex-shrink: 0;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+          border: 1px solid rgba(0,0,0,0.05);
+        }
         
-        .title-wrapper { display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 2px; margin-bottom: 4px; position: relative; }
+        .food-info { flex: 1; display: flex; flex-direction: column; height: 100%; justify-content: space-between; overflow: hidden; }
+        
+        .title-wrapper { display: flex; justify-content: flex-start; align-items: center; width: 100%; margin-top: 0px; margin-bottom: 2px; position: relative; }
         
         .food-name { 
           font-weight: 800; 
-          font-size: 0.82rem; 
+          font-size: 0.74rem; 
           color: var(--card-text);
-          line-height: 1.25;
-          text-align: center;
+          line-height: 1.35;
+          text-align: right;
           display: block;
-          word-break: break-word;
+          word-break: keep-all; 
           overflow: hidden;
-          padding: 0 2px;
+          width: 100%;
         }
         body.dark-mode .food-name { color: #FFFFFF; }
 
-        .inline-sizes-stack { display: flex; flex-direction: column; gap: 6px; width: 100%; margin-top: auto; }
-        
-        .inline-size-row { display: flex; justify-content: space-between; align-items: center; background: #F4F6F8; padding: 5px 6px; border-radius: 8px; font-size: 0.6rem; font-weight: 700; color: var(--card-text); width: 100%; }
-        body.dark-mode .inline-size-row { background: rgba(255, 255, 255, 0.03); }
-        
-        .inline-label-text { display: flex; align-items: center; overflow: hidden; gap: 2px; }
-        
-        .inline-add-btn-circle { background: var(--accent); color: white; padding: 3px 6px; border-radius: 6px; font-size: 0.6rem; font-weight: bold; flex-shrink: 0; cursor: pointer; }
+        .price-row { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: auto; padding: 2px 0 0 0; gap: 4px; }
+        .food-price { font-weight: 800; color: var(--accent); font-size: 0.85rem; white-space: nowrap; }
 
-        .price-row { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: auto; padding: 2px 4px 0 4px; }
-        .food-price { font-weight: 800; color: var(--accent); font-size: 0.85rem; }
-
-        .add-btn { background: var(--accent); color: white; border: none; padding: 6px 14px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: pointer; transition: background 0.2s ease; white-space: nowrap; }
+        /* هنا التعديل: جعل الزر ملهوش حواف حادة (شبه دائري ومستطيل متناسق) */
+        .add-btn { 
+          background: var(--accent); 
+          color: white; 
+          border: none; 
+          padding: 6px 16px; 
+          border-radius: 12px; 
+          font-size: 0.7rem; 
+          font-weight: bold; 
+          cursor: pointer; 
+          transition: background 0.2s ease; 
+          white-space: nowrap; 
+          flex-shrink: 0; 
+        }
         
         .restaurant-footer { padding: 25px 20px; text-align: center; background: linear-gradient(to bottom, rgba(0,0,0,0.02), rgba(0,0,0,0.05)); border-top: 1px solid rgba(0,0,0,0.05); margin-top: 30px; }
         body.dark-mode .restaurant-footer { background: transparent; border-top-color: rgba(255,255,255,0.05); }
@@ -218,11 +218,27 @@
         body.dark-mode .modal { background: rgba(0, 0, 0, 0.7); }
         .modal-content { background: var(--card-bg); width: 100%; max-width: 480px; padding: 16px; border-radius: 24px 24px 0 0; max-height: 85vh; overflow-y: auto; color: var(--main-text); box-shadow: 0 -15px 40px rgba(0,0,0,0.1); border-top: 4px solid var(--desc-text); }
         .modal-content h2 { font-weight: 800; display: flex; align-items: center; gap: 8px; font-size: 1.05rem; color: var(--card-text); margin-bottom: 5px; }
-        .cart-item-card { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: var(--bg); border-radius: 12px; margin-bottom: 8px; border: none; box-shadow: 0 2px 6px rgba(0,0,0,0.01); }
-        .cart-item-info { flex: 1; }
-        .cart-item-name { font-weight: 700; font-size: 0.85rem; color: var(--card-text); }
+        
+        .cart-item-card { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: var(--bg); border-radius: 12px; margin-bottom: 8px; border: none; box-shadow: 0 2px 6px rgba(0,0,0,0.01); gap: 10px; }
+        .cart-item-thumb { width: 45px; height: 45px; border-radius: 8px; object-fit: cover; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.05); }
+        .cart-item-info { flex: 1; overflow: hidden; }
+        .cart-item-name { font-weight: 700; font-size: 0.85rem; color: var(--card-text); display: block; word-break: break-word; }
         .cart-item-price { color: var(--accent); font-weight: 800; font-size: 0.8rem; display: block; margin-top: 1px; }
-        .remove-btn { color: var(--accent); font-weight: 800; font-size: 0.75rem; cursor: pointer; padding: 4px 10px; background: rgba(169, 35, 26, 0.08); border-radius: 8px; }
+        .remove-btn { color: var(--accent); font-weight: 800; font-size: 0.75rem; cursor: pointer; padding: 4px 10px; background: rgba(169, 35, 26, 0.08); border-radius: 8px; flex-shrink: 0; }
+        
+        /* جعل أزرار الإضافة داخل المودال مواءمة للتصميم شبه الدائري المستطيل */
+        .inline-add-btn-circle { 
+          background: var(--accent); 
+          color: white; 
+          padding: 6px 16px; 
+          border-radius: 12px; 
+          font-size: 0.7rem; 
+          font-weight: bold; 
+          flex-shrink: 0; 
+          cursor: pointer; 
+          transition: background 0.2s ease; 
+        }
+
         .user-fields { margin-top: 12px; }
         .user-fields input { background: var(--bg); border: 1px solid rgba(0,0,0,0.05); padding: 12px; border-radius: 12px; width: 100%; margin-bottom: 10px; color: var(--card-text); text-align: right; font-weight: 600; font-size: 0.8rem; }
         .user-fields input:focus { border-color: var(--desc-text); outline: none; }
@@ -251,7 +267,7 @@
             <div class="header-top">
                 <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn"><i class="fa-solid fa-moon"></i></button>
                 <div class="header-logo-container">
-                    <img src="./images/lllogo.jpg" class="header-logo" onerror="this.src='./images/default.jpg'">
+                    <img src="./images/lllogo.jpg" class="header-logo" onerror="this.src='images/default.jpg'">
                 </div>
                 <div class="cart-trigger" onclick="toggleCart(true)" id="cartBtn">
                     <span class="badge" id="cartBadge">0</span>
@@ -297,6 +313,7 @@
                 <input type="tel" id="uPhone" placeholder="رقم الموبايل">
                 <input type="text" id="uAddr" placeholder="العنوان بالتفصيل">
             </div>
+            <div id="uPhone_error" style="color:var(--accent); font-size:0.75rem; text-align:center; display:none; margin-bottom:10px;"></div>
             <button class="submit-btn" onclick="sendToWA()"><i class="fa-brands fa-whatsapp"></i> تأكيد الطلب عبر WhatsApp</button>
         </div>
     </div>
@@ -416,9 +433,7 @@
                 el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             }
             
-            // تم تفعيل الخلفية المخصصة لكل الأقسام تلقائياً
-            const cardInlineStyle = `style="background-image: url('${IMAGES_PATH}${cat}.jpg');"`;
-            const cardExtraClass = 'has-bg';
+            const currentCatImg = `${IMAGES_PATH}${cat}.jpg`;
 
             document.getElementById('menuList').innerHTML = menuData.filter(i => i.category === cat).map((item) => {
                 let displayPriceHtml = '';
@@ -427,18 +442,19 @@
                     displayPriceHtml = `
                     <div class="price-row">
                         <span class="food-price">${item.prices[0].price} ج</span>
-                        <button class="add-btn" onclick="executeAddToCart('${item.name}', '${item.prices[0].price}', this)">اطلب</button>
+                        <button class="add-btn" onclick="executeAddToCart('${item.name}', '${item.prices[0].price}', '${currentCatImg}', this)">اطلب</button>
                     </div>`;
                 } else {
                     const globalIdx = menuData.indexOf(item);
                     displayPriceHtml = `
                     <div class="price-row" style="justify-content: center; width: 100%;">
-                        <button class="add-btn" onclick="openSizeModal(${globalIdx})">اختيار الحجم</button>
+                        <button class="add-btn" onclick="openSizeModal(${globalIdx}, '${currentCatImg}')">اختيار الحجم</button>
                     </div>`;
                 }
 
                 return `
-                <div class="food-card ${cardExtraClass}" ${cardInlineStyle}>
+                <div class="food-card">
+                    <img class="food-card-thumb" src="${currentCatImg}" onerror="this.src='${IMAGES_PATH}default.jpg'">
                     <div class="food-info">
                         <div class="title-wrapper">
                             <span class="food-name">${item.name}</span>
@@ -450,7 +466,7 @@
             }).join('');
         }
 
-        function openSizeModal(globalIdx) {
+        function openSizeModal(globalIdx, catImg) {
             const item = menuData[globalIdx];
             document.getElementById('sizeModalTitle').innerHTML = `<i class="fa-solid fa-utensils"></i> ${item.name}`;
             const list = document.getElementById('sizeOptionsList');
@@ -460,7 +476,7 @@
                         <span class="cart-item-name" style="font-size:0.85rem;">${p.label}</span>
                         <span class="cart-item-price" style="font-size:0.8rem;">${p.price} ج.م</span>
                     </div>
-                    <span class="inline-add-btn-circle" style="padding: 6px 12px; font-size: 0.7rem; border-radius: 8px;" onclick="executeAddToCartModal(this, '${item.name} (${p.label})', '${p.price}')">اطلب الآن</span>
+                    <span class="inline-add-btn-circle" onclick="executeAddToCartModal(this, '${item.name} (${p.label})', '${p.price}', '${catImg}')">اطلب الآن</span>
                 </div>
             `).join('');
             toggleSizeModal(true);
@@ -472,12 +488,12 @@
             else { modal.style.display = 'none'; }
         }
 
-        function executeAddToCartModal(element, name, price) {
+        function executeAddToCartModal(element, name, price, img) {
             const originalText = element.innerText;
             element.innerText = "تم ✔️";
             element.style.background = "#1E7E34";
             
-            cart.push({name, price});
+            cart.push({name, price, img});
             updateCart();
             
             const cartBtn = document.getElementById('cartBtn');
@@ -491,12 +507,12 @@
             }, 1000);
         }
 
-        function executeAddToCart(name, price, btn) {
+        function executeAddToCart(name, price, img, btn) {
             const originalText = btn.innerText;
             btn.innerText = "تم ✔️";
             btn.style.background = "#1E7E34";
             
-            cart.push({ name: name, price: price });
+            cart.push({ name: name, price: price, img: img });
             updateCart();
             
             const cartBtn = document.getElementById('cartBtn');
@@ -517,6 +533,7 @@
               currentTotal += parseFloat(item.price);
               return `
               <div class="cart-item-card">
+                  <img class="cart-item-thumb" src="${item.img}" onerror="this.src='${IMAGES_PATH}default.jpg'">
                   <div class="cart-item-info">
                       <span class="cart-item-name">${item.name}</span>
                       <span class="cart-item-price">${item.price} ج.م</span>
@@ -548,7 +565,21 @@
 
         function sendToWA() {
             const n = document.getElementById('uName').value, p = document.getElementById('uPhone').value, a = document.getElementById('uAddr').value;
+            const errDiv = document.getElementById('uPhone_error');
+            if(errDiv) errDiv.style.display = 'none';
             if(!n || !p || !a || cart.length === 0) return alert("يرجى إكمال البيانات واختيار الأصناف");
+            
+            const cleanPhone = p.trim();
+            if(cleanPhone.length < 11 || !/^(010|011|012|015)/.test(cleanPhone)) {
+                if(errDiv) {
+                    errDiv.innerText = "رقم الهاتف غير صحيح، يجب أن يتكون من 11 رقم ويبدأ بـ 010 أو 011 أو 012 أو 015";
+                    errDiv.style.display = 'block';
+                } else {
+                    alert("رقم الهاتف غير صحيح!");
+                }
+                return;
+            }
+
             let msg = `طلب جديد - مطعم كاتشب\n\n👤 الاسم: ${n}\n📱 الموبايل: ${p}\n📍 العنوان: ${a}\n\nالطلبات:\n` 
                       + cart.map(i => `- ${i.name} (${i.price} ج.م)`).join('\n')
                       + `\n\n💰 الإجمالي: ${currentTotal} ج.م`;
