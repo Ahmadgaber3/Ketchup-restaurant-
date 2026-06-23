@@ -137,7 +137,7 @@
 
         .menu-list { padding: 12px 8px; max-width: 600px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         
-        /* كارت الطعام المرن - يدعم الخلفيات المخصصة أو الافتراضية عبر الجافاسكريبت */
+        /* كارت الطعام المرن */
         .food-card { 
           background-color: var(--card-bg);
           background-size: cover;
@@ -157,24 +157,22 @@
         }
         body.dark-mode .food-card { background-color: #140E0C; }
         
-        /* طبقة تظليل ذكية لحماية النصوص في حال وجود صورة خلفية للكارت */
+        /* طبقة تظليل ذكية لحماية النصوص */
         .food-card.has-bg::after {
           content: '';
           position: absolute;
           top: 0; left: 0; right: 0; bottom: 0;
-          background: linear-gradient(to bottom, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.7) 100%);
+          background: linear-gradient(to bottom, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.85) 100%);
           z-index: 0;
         }
         body.dark-mode .food-card.has-bg::after {
-          background: linear-gradient(to bottom, rgba(20,14,12,0.85) 0%, rgba(20,14,12,0.85) 100%);
+          background: linear-gradient(to bottom, rgba(20,14,12,0.9) 0%, rgba(20,14,12,0.9) 100%);
         }
 
         .food-info { flex: 1; display: flex; flex-direction: column; width: 100%; z-index: 1; }
         
-        /* تظبيط الموضع لاسم الصنف ورفعه فوق حاجة بسيطة خالص */
         .title-wrapper { display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 2px; margin-bottom: 4px; position: relative; }
         
-        /* تكبير اسم الصنف حاجة بسيطة وزيادة وضوحه */
         .food-name { 
           font-weight: 800; 
           font-size: 0.82rem; 
@@ -317,9 +315,6 @@
         let currentTotal = 0;
         let headers = [];
 
-        // قائمة الأقسام الخمسة المستهدفة بالخلفية المخصصة
-        const customBgCategories = ["فطير لحوم", "فطير دجاج", "فطير مكسات", "فطير بحريات", "فطير خضروات"];
-
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             const icon = document.getElementById('themeBtn').querySelector('i');
@@ -421,10 +416,9 @@
                 el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             }
             
-            // فحص إذا كان القسم الحالي يحتاج خلفية صورة مخصصة
-            const isCustomBg = customBgCategories.includes(cat);
-            const cardInlineStyle = isCustomBg ? `style="background-image: url('${IMAGES_PATH}${cat}.jpg');"` : '';
-            const cardExtraClass = isCustomBg ? 'has-bg' : '';
+            // تم تفعيل الخلفية المخصصة لكل الأقسام تلقائياً
+            const cardInlineStyle = `style="background-image: url('${IMAGES_PATH}${cat}.jpg');"`;
+            const cardExtraClass = 'has-bg';
 
             document.getElementById('menuList').innerHTML = menuData.filter(i => i.category === cat).map((item) => {
                 let displayPriceHtml = '';
@@ -494,24 +488,6 @@
                 element.innerText = originalText;
                 element.style.background = "var(--accent)";
                 toggleSizeModal(false);
-            }, 1000);
-        }
-
-        function executeAddToCartInline(element, name, price) {
-            const originalText = element.innerText;
-            element.innerText = "تم ✔️";
-            element.style.background = "#1E7E34";
-            
-            cart.push({name, price});
-            updateCart();
-            
-            const cartBtn = document.getElementById('cartBtn');
-            cartBtn.classList.add('shake');
-            setTimeout(() => { cartBtn.classList.remove('shake'); }, 400);
-
-            setTimeout(() => {
-                element.innerText = originalText;
-                element.style.background = "var(--accent)";
             }, 1000);
         }
 
