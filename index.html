@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-          --bg: #F3F4F6; 
+          --bg: #E5E7EB; 
           --card-bg: #FFFFFF; 
           --card-border: transparent; 
           --main-text: #2B1E19; 
@@ -27,8 +27,8 @@
           --desc-text: #B58450; 
           --accent: #A9231A; 
           --accent-glow: rgba(169, 35, 26, 0.15);
-          --glass: #F3F4F6; 
-          --header-bg: #F3F4F6;
+          --glass: #E5E7EB; 
+          --header-bg: #E5E7EB;
           --success: #1E7E34;
           --success-bg: #EBF7EE;
           --success-border: #1E7E34;
@@ -137,29 +137,8 @@
 
         .menu-list { padding: 12px 8px; max-width: 600px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         
-        /* تطبيق نظام صورة الخلفية المخصص بالكامل للكروت */
-        .food-card { 
-          background-image: url('./images/card-bg.jpg');
-          background-size: cover;
-          background-position: center;
-          background-repeat: no-repeat;
-          border-radius: 24px; 
-          display: flex; 
-          flex-direction: column; 
-          padding: 15px 12px; 
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04); 
-          border: none; 
-          position: relative; 
-          overflow: hidden; 
-          justify-content: space-between; 
-          margin-bottom: 4px; 
-          min-height: 140px; 
-        }
-        /* تظليل الصورة في الوضع الداكن تلقائياً لراحة العين ووضوح الخطوط */
-        body.dark-mode .food-card { 
-          background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('./images/card-bg.jpg');
-        }
-        
+        .food-card { background: var(--card-bg); border-radius: 20px; display: flex; flex-direction: column; padding: 15px 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03); border: none; position: relative; overflow: hidden; justify-content: space-between; margin-bottom: 4px; min-height: 140px; }
+        body.dark-mode .food-card { background: #140E0C; }
         .food-info { flex: 1; display: flex; flex-direction: column; width: 100%; }
         
         .title-wrapper { display: flex; justify-content: center; align-items: center; width: 100%; margin-bottom: 8px; position: relative; }
@@ -478,7 +457,7 @@
 
         function executeAddToCartInline(element, name, price) {
             const originalText = element.innerText;
-            element.innerText = "تم ✔️";
+            element.innerText = "تم✔️";
             element.style.background = "#1E7E34";
             
             cart.push({name, price});
