@@ -135,30 +135,32 @@
         .cat-item.active span { color: #000000; font-weight: 800; opacity: 1; }
         body.dark-mode .cat-item.active span { color: #FFFFFF; }
 
-        .menu-list { padding: 12px 8px; max-width: 600px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        /* هنا التعديل: تحويل شبكة العرض إلى عمود واحد كامل ممتد بعرض الشاشة */
+        .menu-list { padding: 12px 10px; max-width: 600px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 12px; }
         
+        /* هنا التعديل: الكارت أصبح مستطيلاً كاملاً وممتداً أفقياً مع حواف مستديرة ناعمة وبدون حوارات جانبية */
         .food-card { 
           background-color: var(--card-bg);
-          border-radius: 24px; 
+          border-radius: 16px; 
           display: flex; 
           flex-direction: row-reverse; 
           align-items: center;
-          padding: 12px; 
+          padding: 14px; 
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04); 
           border: none; 
           position: relative; 
           overflow: hidden; 
           justify-content: space-between; 
-          margin-bottom: 4px; 
-          min-height: 140px; 
-          gap: 10px;
+          min-height: 110px; 
+          gap: 15px;
+          width: 100%;
         }
         body.dark-mode .food-card { background-color: #140E0C; }
 
         .food-card-thumb {
-          width: 75px;
-          height: 75px;
-          border-radius: 16px;
+          width: 85px;
+          height: 85px;
+          border-radius: 12px;
           object-fit: cover;
           flex-shrink: 0;
           box-shadow: 0 2px 6px rgba(0,0,0,0.05);
@@ -167,13 +169,13 @@
         
         .food-info { flex: 1; display: flex; flex-direction: column; height: 100%; justify-content: space-between; overflow: hidden; }
         
-        .title-wrapper { display: flex; justify-content: flex-start; align-items: center; width: 100%; margin-top: 0px; margin-bottom: 2px; position: relative; }
+        .title-wrapper { display: flex; justify-content: flex-start; align-items: center; width: 100%; margin-top: 0px; margin-bottom: 4px; position: relative; }
         
         .food-name { 
           font-weight: 800; 
-          font-size: 0.74rem; 
+          font-size: 0.86rem; 
           color: var(--card-text);
-          line-height: 1.35;
+          line-height: 1.4;
           text-align: right;
           display: block;
           word-break: keep-all; 
@@ -182,17 +184,16 @@
         }
         body.dark-mode .food-name { color: #FFFFFF; }
 
-        .price-row { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: auto; padding: 2px 0 0 0; gap: 4px; }
-        .food-price { font-weight: 800; color: var(--accent); font-size: 0.85rem; white-space: nowrap; }
+        .price-row { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: auto; padding: 4px 0 0 0; gap: 8px; }
+        .food-price { font-weight: 800; color: var(--accent); font-size: 0.9rem; white-space: nowrap; }
 
-        /* هنا التعديل: جعل الزر ملهوش حواف حادة (شبه دائري ومستطيل متناسق) */
         .add-btn { 
           background: var(--accent); 
           color: white; 
           border: none; 
           padding: 6px 16px; 
           border-radius: 12px; 
-          font-size: 0.7rem; 
+          font-size: 0.72rem; 
           font-weight: bold; 
           cursor: pointer; 
           transition: background 0.2s ease; 
@@ -226,7 +227,6 @@
         .cart-item-price { color: var(--accent); font-weight: 800; font-size: 0.8rem; display: block; margin-top: 1px; }
         .remove-btn { color: var(--accent); font-weight: 800; font-size: 0.75rem; cursor: pointer; padding: 4px 10px; background: rgba(169, 35, 26, 0.08); border-radius: 8px; flex-shrink: 0; }
         
-        /* جعل أزرار الإضافة داخل المودال مواءمة للتصميم شبه الدائري المستطيل */
         .inline-add-btn-circle { 
           background: var(--accent); 
           color: white; 
