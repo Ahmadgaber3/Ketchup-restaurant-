@@ -302,7 +302,7 @@
         </div>
         <p class="footer-rights">جميع الحقوق محفوظة لـ سلسلة مطاعم كاتشب 2026 ©</p>
         <div class="dev-credit">
-            Designed by / احمد جابر
+            Designed by / Ahmed Jaber
             <a href="tel:01030252806"><i class="fa-solid fa-phone-flip"></i> 01030252806</a>
         </div>
     </footer>
@@ -365,7 +365,6 @@
             if(document.body.classList.contains('dark-mode')) { icon.className = 'fa-solid fa-sun'; } else { icon.className = 'fa-solid fa-moon'; }
         }
 
-        // دالة التحميل المسبق المحدثة: تقوم بتحميل الصور برمجياً وإرجاع Promise لضمان اكتمال التحميل
         function preloadImages(data) {
             const cats = [...new Set(data.map(i => i.category))];
             const promises = cats.map(c => {
@@ -373,7 +372,7 @@
                     const img = new Image();
                     img.src = `${IMAGES_PATH}${c}.jpg`;
                     img.onload = () => resolve();
-                    img.onerror = () => resolve(); // لضمان عدم توقف المنيو لو صورة ممسوحة
+                    img.onerror = () => resolve();
                 });
             });
             return Promise.all(promises);
@@ -391,24 +390,21 @@
             r.push(p); return r;
         }
 
-        // دالة العداد الذكية: تعد من 0 لـ 100 بالتزامن التام مع جلب البيانات وتحميل الصور في نفس اللحظة
         function startSplashAnimation(imagesPromise, callback) {
             const progressBar = document.getElementById('progressBar');
             const progressText = document.getElementById('progressText');
             let currentPercent = 0;
-            const duration = 2800; // مدة العد التقريبية بالأجزاء من الثانية
+            const duration = 2800; 
             const intervalTime = 30;
             const increment = 100 / (duration / intervalTime);
 
             const timer = setInterval(async () => {
                 currentPercent += increment;
                 
-                // أول ما العداد يقرب يخلص (عند 90%)، ننتظر انتهاء تحميل جميع الصور فعلياً من السيرفر
                 if (currentPercent >= 90) {
                     clearInterval(timer);
-                    await imagesPromise; // إجبار المتصفح على الانتظار حتى تكتمل الصور بالكامل
+                    await imagesPromise; 
                     
-                    // تقفيل الـ 100% فوراً بعد التأكد من كاش الصور
                     progressBar.style.width = '100%';
                     progressText.innerText = '100';
                     setTimeout(callback, 150);
@@ -451,18 +447,15 @@
                     }
                 }
                 
-                // بدء عملية تحميل الصور وحفظ الـ Promise الخاص بها
                 const imagesPromise = preloadImages(menuData); 
                 renderNav();
 
-                // تشغيل العداد وتمرير الصور له لضمان فتح المنيو مع اكتمال التحميل الفوري في نفس الثانية
                 startSplashAnimation(imagesPromise, () => {
                     document.getElementById('splash-screen').classList.add('splash-hidden');
                 });
 
             } catch (e) { 
                 console.log("خطأ في جلب البيانات");
-                // لضمان فتح الموقع حتى لو انقطع الإنترنت أثناء التحميل
                 document.getElementById('splash-screen').classList.add('splash-hidden');
             }
         }
@@ -615,7 +608,6 @@
             if (sModal && sModal.style.display === 'flex') sModal.style.display = 'none';
         });
 
-        // تم ربط استدعاء تشغيل الصوت داخل دالة إرسال وإتمام الطلب للواتساب مباشرة وثباتها على الدوام
         function sendToWA() {
             const n = document.getElementById('uName').value, p = document.getElementById('uPhone').value, a = document.getElementById('uAddr').value;
             const errDiv = document.getElementById('uPhone_error');
@@ -640,7 +632,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            loadMenu(); // جلب المنيو وبدء العداد بالتوازي التام
+            loadMenu(); 
         });
 
         if ('serviceWorker' in navigator) {
