@@ -330,21 +330,15 @@
         let currentTotal = 0;
         let headers = [];
 
-        // الحل الهندسي النهائي: دالة مبرمجة بشفرة نغمة تنبيه أصلية ومحمية من الحظر وتعمل للأبد
         function playClickSound() {
             try {
-                // شفرة نغمة ديجيتال احترافية خفيفة جداً مدمجة داخلياً بصيغة Base64
-                const audioBlob = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==';
-                const audio = new Audio(audioBlob);
-                
-                // توليد بديل فوري للمتصفحات العنيدة يضمن خروج الصوت اللحظي بدون أي توقف
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 if (AudioContext) {
                     const ctx = new AudioContext();
                     const osc = ctx.createOscillator();
                     const gain = ctx.createGain();
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(800, ctx.currentTime); // تردد حاد وواضح "بِيب" كتنبيه
+                    osc.frequency.setValueAtTime(800, ctx.currentTime);
                     gain.gain.setValueAtTime(0.2, ctx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
                     osc.connect(gain);
@@ -353,7 +347,7 @@
                     osc.stop(ctx.currentTime + 0.05);
                     setTimeout(() => { ctx.close(); }, 80);
                 }
-            } catch (e) { console.log("الصوت مدعوم ومثبت"); }
+            } catch (e) { console.log(e); }
         }
 
         function toggleTheme() {
@@ -469,7 +463,6 @@
                     </div>`;
                 } else {
                     const globalIdx = menuData.indexOf(item);
-                    // تنشيط نغمة التنبيه القاطعة للأبد عند اختيار العرض
                     displayPriceHtml = `
                     <div class="price-row" style="justify-content: flex-end; width: 100%;">
                         <button class="add-btn" onclick="playClickSound(); openSizeModal(${globalIdx}, '${currentCatImg}')">اختيار الحجم</button>
@@ -494,7 +487,6 @@
             const item = menuData[globalIdx];
             document.getElementById('sizeModalTitle').innerHTML = `<i class="fa-solid fa-utensils"></i> ${item.name}`;
             const list = document.getElementById('sizeOptionsList');
-            // تنشيط نغمة التنبيه القاطعة للأبد عند الضغط واختيار السعر المخصص
             list.innerHTML = item.prices.map(p => `
                 <div class="cart-item-card" style="margin-bottom: 8px; background: var(--bg); display: flex; justify-content: space-between; align-items: center; padding: 10px 12px;">
                     <span class="inline-add-btn-circle" style="flex-shrink: 0;" onclick="playClickSound(); executeAddToCartModal(this, '${item.name} (${p.label})', '${p.price}', '${catImg}')">اطلب الآن</span>
@@ -618,6 +610,7 @@
             });
         });
 
+        // تم تنظيف كود التحديث ليعمل بذكاء في الخلفية بدون عمل ريفريش لانهائي معلق
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js?v=' + Date.now())
@@ -628,7 +621,7 @@
                         if (installingWorker) {
                             installingWorker.onstatechange = () => {
                                 if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                    window.location.reload(); 
+                                    console.log('هناك تحديث جديد تم تحميله في الخلفية وسيطبق في الفتحة القادمة بنجاح.');
                                 }
                             };
                         }
