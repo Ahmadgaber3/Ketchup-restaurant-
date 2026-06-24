@@ -1,13 +1,13 @@
   {
-  "name": "مطعم كاتشب | المنيو الرسمي",
+  "name": "مطعم كاتشب",
   "short_name": "كاتشب",
   "description": "المنيو الرسمي الإلكتروني لسلسلة مطاعم كاتشب",
-  "start_url": "/index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#F3F4F6",
   "theme_color": "#A9231A",
   "orientation": "portrait",
-  "id": "/index.html",
+  "scope": "./",
   "icons": [
     {
       "src": "images/lllogo.jpg",

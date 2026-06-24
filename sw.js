@@ -1,43 +1,23 @@
-const CACHE_NAME = 'ketchup-cache-v-' + Date.now(); // كاش ديناميكي يتغير مع كل تشغيل لضمان عدم التعليق
+const CACHE_NAME = 'ketchup-v1';
 
-// التثبيت
+// التثبيت والتنشيط الفوري
 self.addEventListener('install', (event) => {
-    self.skipWaiting(); // إجبار السيرفس وركر الجديد على التنشيط فوراً دون انتظار إغلاق الأبلكيشن
+    self.skipWaiting();
 });
 
-// التنشيط ومسح الكاش القديم تماماً
 self.addEventListener('activate', (event) => {
     event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames.map((cache) => {
-                    if (cache !== CACHE_NAME) {
-                        console.log('تم تنظيف كاش قديم بنجاح');
-                        return caches.delete(cache);
-                    }
-                })
-            );
-        }).then(() => self.clients.claim()) // جعل السيرفس وركر يسيطر على كل الصفحات المفتوحة فوراً
+        caches.keys().then((keys) => {
+            return Promise.all(keys.map(key => caches.delete(key)));
+        }).then(() => self.clients.claim())
     );
 });
 
-// استراتيجية جلب البيانات: تروح للسيرفر الأول (Network First) عشان تجيب التعديل الجديد فوراً، ولو مفيش نت يجيب من الكاش
+// جلب البيانات من الشبكة أولاً لضمان التحديث التلقائي
 self.addEventListener('fetch', (event) => {
     event.respondWith(
-        fetch(event.request)
-            .then((response) => {
-                // لو الاستجابة سليمة، حط نسخة في الكاش للطوارئ ورجعها
-                if (event.request.method === 'GET' && response.status === 200) {
-                    const responseClone = response.clone();
-                    caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(event.request, responseClone);
-                    });
-                }
-                return response;
-            })
-            .catch(() => {
-                // لو مفيش إنترنت خالص يشتغل من الكاش القديم المتسيف
-                return caches.match(event.request);
-            })
+        fetch(event.request).catch(() => {
+            return caches.match(event.request);
+        })
     );
 });
