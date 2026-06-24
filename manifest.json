@@ -1,0 +1,9 @@
+{
+  "nav_items_count": 4,
+  "name": "مطعم كاتشب | المنيو الرسمي",
+  "short_name": "كاتشب",
+  "description": "المنيو الرسمي الإلكتروني لمطعم كاتشب",
+  "start_url": "index.html?v=1",
+  "display": "standalone",
+  "background_color": "#F3F4F6",
+  "theme
